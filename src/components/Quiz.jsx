@@ -5,11 +5,16 @@ import Question from './Question'
 const Quiz = () => {
     const [userAnswers, setUserAnswers] = useState([])
     const [answerState, setAnswerState] = useState('unanswered')
+    const [currentAnswer, setCurrentAnswer] = useState()
     console.log(userAnswers)
 
     const activeQuestionIndex = answerState==='unanswered'? userAnswers.length: userAnswers.length-1
 
     const handleSelectAnswer = useCallback((selectedAnswer) =>{
+        if (currentAnswer==selectedAnswer){
+            return;
+        }
+        setCurrentAnswer(selectedAnswer);
         setAnswerState('answered')
         setUserAnswers(prev=>[...prev,selectedAnswer])
 
@@ -30,7 +35,7 @@ const Quiz = () => {
         handleSelectAnswer(null)
     ,[handleSelectAnswer])
 
-    if (activeQuestionIndex==questions.length){
+    if (activeQuestionIndex>=questions.length){
         return (
             <div id='summary'>
                 <img src="/src/assets/quiz-complete.png" alt="complete-icon" />
